@@ -48,7 +48,7 @@ jobs:
         username: ${{ secrets.ftp_username }}
         password: ${{ secrets.ftp_password }}
         local-dir: ./
-        server-dir: ./${{ secrets.ftp_server }} # Directorio del proyecto Laravel completo
+        server-dir: ./${{ secrets.ftp_project_dir }} # Directorio del proyecto Laravel completo
 
     # 6. Subir solo la carpeta public al directorio public_html
     - name: 📂 Sincronizar carpeta public
