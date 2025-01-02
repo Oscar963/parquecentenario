@@ -3,7 +3,7 @@ on:
     branches:
       - main
 
-name: 🚀 Despliegue Laravel 8.0
+name: 🚀 Despliegue Laravel 8.0 -
 
 jobs:
   web-deploy:
