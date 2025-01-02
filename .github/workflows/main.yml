@@ -18,7 +18,7 @@ jobs:
     - name: ⚙️ Configurar PHP y Composer
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.1' # Ajusta según la versión que uses
+        php-version: '7.4' # Ajusta según la versión que uses
         extensions: mbstring, pdo, tokenizer, xml, bcmath, ctype, fileinfo, json
         ini-values: post_max_size=256M, upload_max_filesize=256M
         tools: composer
