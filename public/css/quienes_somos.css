@@ -1,0 +1,159 @@
+.flex-quienes-somos {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 80px;
+    gap: 60px;
+}
+.quienes-somos {
+    max-width: 50%;
+}
+.fondo-negro {
+    background: #52baa5;
+}
+.color-blanco {
+    color: #fff;
+}
+.iconos img {
+    max-width: 350px;
+    max-height: 350px;
+}
+p {
+    text-align: justify;
+}
+.mapa {
+    display: flex;
+    flex-direction: row;
+    padding: 80px;
+    gap: 60px;
+    justify-content: space-around;
+    align-items: center;
+}
+.centrar-h3 {
+    position: relative;
+    font-size: 60px;
+    left: 30px;
+}
+.historia {
+    display: flex;
+    flex-direction: column;
+}
+.zoom-image {
+    animation: zoomEffect 10s infinite alternate; 
+}
+@keyframes zoomEffect {
+    0% {
+        transform: scale(1); 
+    }
+    50% {
+        transform: scale(1.1); 
+    }
+    100% {
+        transform: scale(1); 
+    }
+}
+.img-estatua {
+    max-width: 700px;
+    max-height: 700px;
+    border-radius: 15px;
+    mask-image: linear-gradient(
+        #fff 90%,
+        transparent
+    );
+}
+address {
+    font-size: 25px;
+}
+.image-container {
+  position: relative;
+  max-width: 100%;
+  max-height: 400px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.30);
+}
+
+iframe {
+    mask-image: linear-gradient(
+        #fff 90%,
+        transparent
+    );
+    width: 900px;
+    height: 450px;
+    border: 0;
+    border-radius: 20px;
+}
+@media (max-width: 768px) {
+    .flex-quienes-somos {
+        flex-direction: column;
+        padding: 10px;
+        align-items: stretch;  
+        justify-content: flex-start;
+        width: 100%;   
+        gap: 0px;
+    }
+    .quienes-somos {
+        max-width: 100%;
+    }
+    .mapa {
+        flex-direction: column;
+    }
+    .gallery-items {
+        position: relative;
+        max-width: 280px;  
+        height: auto;      
+        margin: 0 auto;    
+        display: block;    
+        right: 25px;
+    }
+    .iconos img {
+        max-width: 150px;
+        max-height: 150px;
+    }
+    p {
+        width: 100%;            
+        box-sizing: border-box; 
+        margin: 0;              
+        padding: 10px;          
+        text-align: justify;    
+    }
+    .image-container {
+        max-height: 1300px;
+    }
+    .centrar-h3 {
+        font-size: 30px;
+        text-align: center;
+        left: 0px;
+    }
+    .img-estatua {
+        max-width: 100%;
+        max-height: 300px;
+    }
+    .responsive-estatua {
+        text-align: center;
+    }
+    address {
+        font-size: 20px;
+        text-align: center;
+    }
+    iframe {
+        mask-image: linear-gradient(
+            #fff 90%,
+            transparent
+        );
+        width: 400px;
+        height: 450px;
+        border: 0;
+        border-radius: 20px;
+    }
+}
+
+@media (max-width: 1400px) {
+    .img-estatua {
+        max-width: 700px;
+        max-height: 700px;
+        border-radius: 50%;
+    }
+}
+
+
+

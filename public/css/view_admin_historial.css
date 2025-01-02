@@ -1,0 +1,25 @@
+.custom-input {
+    max-width: 200px; /* Ajustar el tamaño según lo necesites */
+}
+.btn-lg-custom {
+    padding: 0.5rem 1rem; /* Ajusta el tamaño del padding para agrandar los botones */
+    font-size: 1rem; /* Cambia el tamaño de fuente si es necesario */
+}
+.input-group {
+    margin-bottom: 0.5rem; /* Reduce el espacio entre los inputs */
+}
+label {
+    margin-right: 1rem;
+}
+.btn-square {
+    width: 40px; /* Ancho del botón cuadrado */
+    height: 40px; /* Alto del botón cuadrado */
+    padding: 0; /* Elimina el padding interno */
+}
+li {
+    color: #fff;
+    font-weight: bold;
+}
+span {
+    font-size: 20px;
+}

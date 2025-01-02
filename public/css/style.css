@@ -1,0 +1,51 @@
+#hora:hover {
+   transition: max-height 0.3s ease-out; 
+}
+.error-message {
+    color: red;
+    font-size: 12px;
+    visibility: hidden; 
+    margin-top: 5px;
+}
+ /* Custom styles */
+.footer {
+    background-color: #222;
+    padding: 40px 0;
+    color: #ffff;
+}
+.footer .footer-logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+.footer .social-icons a {
+    margin: 0 10px;
+    color: #ffff;
+    font-size: 20px;
+}
+.footer .social-icons a:hover {
+    color: #007bff;
+}
+.footer a {
+    color: white;
+}
+.footer a:hover {
+    color: #007bff;
+    text-decoration: none;
+}
+.margin {
+    margin: 60px;
+}
+.ui-datepicker {
+    position: absolute !important; /* Asegura que el calendario no mueva otros elementos */
+    z-index: 1000; /* Asegura que el calendario esté sobre otros elementos */
+}
+#checkButtom {
+    height: 200px;
+}
+a {
+    text-decoration: none;
+}
+.gallery-items{
+    float: left;
+    /* height: 350px; */
+}

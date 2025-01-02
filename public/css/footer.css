@@ -1,0 +1,95 @@
+#footer {
+    background-color: #222;
+    color: white;
+    padding-top: 10px;
+    border-top: 4px solid #FF9900;
+}
+#footer .footer-copyright {
+    background-color: #1a1a1a;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    text-align: center;
+}
+#footer .navbar-brand {
+    margin-top: 45px;
+    height: 65px;
+}
+#footer .footer-copyright p {
+    margin: 10px;
+    color: #ccc;
+}
+#footer ul {
+    list-style-type: none;
+    padding-left: 0;
+    line-height: 1.7;
+}
+#footer h5 {
+    font-size: 16px;
+    color: white;
+    font-weight: bold;
+	text-transform: uppercase;
+}
+#footer h2 a{
+    font-size: 50px;
+    text-align: center;
+    color: #fff;
+}
+#footer a {
+    color: #d2d1d1;
+    text-decoration: none;
+}
+#footer a:hover,
+#footer a:focus {
+    text-decoration: none;
+    color: #FF9900;
+}
+#footer .social-networks a {
+    font-size: 32px;
+    color: #f9f9f9;
+    padding: 10px;
+    transition: 0.2s;
+}
+#footer .social-networks a:hover {
+    text-decoration: none;
+}
+#footer .facebook:hover {
+    color: #0077e2;
+}
+#footer .google:hover {
+    color: #ef1a1a;
+}
+#footer .twitter:hover {
+    color: #00aced;
+}
+#footer .flick:hover {
+    color: #ff0084;
+}
+#footer .instagram:hover {
+    color: #bc2a8d;
+}
+#footer .btn {
+    color: white;
+    background-color: #FF9900;
+    border-radius: 20px;
+    border: none;
+    width: 150px;
+    display: block;
+    margin: 0 auto;
+    margin-top: 10px;
+    line-height: 25px;
+	border-bottom: 4px solid #cc7a00;
+}
+#footer .btn:hover {
+    background-color: #ffa319;
+}
+@media screen and (max-width: 767px) {
+    #footer {
+        text-align: center;
+    }
+}
+#footer{
+   flex: 0 0 auto;
+   bottom: 0;
+   width: 100%;
+   margin-top: auto;
+}

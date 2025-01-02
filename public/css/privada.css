@@ -1,0 +1,25 @@
+.custom-input {
+    max-width: 200px; 
+}
+.btn-lg-custom {
+    padding: 0.5rem 1rem; 
+    font-size: 1rem; 
+}
+.input-group {
+    margin-bottom: 0.5rem; 
+}
+label {
+    margin-right: 1rem;
+}
+.btn-square {
+    width: 40px; 
+    height: 40px; 
+    padding: 0; 
+}
+li {
+    color: #fff;
+    font-weight: bold;
+}
+span {
+    font-size: 20px;
+}
