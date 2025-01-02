@@ -7,7 +7,7 @@ name: 🚀 Despliegue Laravel
 
 jobs:
   web-deploy:
-    name: 🎉 Despliegue Laravel
+    name: 🎉 Despliegue Laravel 8.0
     runs-on: ubuntu-latest
     steps:
     # 1. Clonar el repositorio
