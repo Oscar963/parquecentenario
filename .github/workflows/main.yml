@@ -50,7 +50,13 @@ jobs:
           local-dir: ./
           server-dir: ./${{ secrets.ftp_project_dir }}/ # Directorio del proyecto Laravel completo
 
-      # 6. Subir solo la carpeta public al directorio public_html
+      # 6. Editar el archivo index.php
+      - name: ✏️ Editar archivo index.php para public_html
+        run: |
+          sed -i "s|/../vendor/autoload.php|/../../${{ secrets.ftp_project_dir }}/vendor/autoload.php|" ./public/index.php
+          sed -i "s|/../bootstrap/app.php|/../../${{ secrets.ftp_project_dir }}/bootstrap/app.php|" ./public/index.php
+
+      # 7. Subir solo la carpeta public al directorio public_html
       - name: 📂 Sincronizar carpeta public
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
