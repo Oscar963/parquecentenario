@@ -40,6 +40,16 @@ jobs:
           npm install
           npm run prod
 
+      # 6. Subir solo la carpeta public al directorio public_html
+      - name: 📂 Sincronizar carpeta public
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        with:
+          server: ${{ secrets.ftp_server }}
+          username: ${{ secrets.ftp_username }}
+          password: ${{ secrets.ftp_password }}
+          local-dir: ./public/
+          server-dir: ./public_html/ # Ruta para archivos públicos
+
       # 5. Subir el proyecto completo al servidor
       - name: 📂 Subir proyecto completo
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
@@ -50,12 +60,3 @@ jobs:
           local-dir: ./
           server-dir: ./${{ secrets.ftp_project_dir }}/ # Directorio del proyecto Laravel completo
 
-      # 6. Subir solo la carpeta public al directorio public_html
-      - name: 📂 Sincronizar carpeta public
-        uses: SamKirkland/FTP-Deploy-Action@4.0.0
-        with:
-          server: ${{ secrets.ftp_server }}
-          username: ${{ secrets.ftp_username }}
-          password: ${{ secrets.ftp_password }}
-          local-dir: ./public
-          server-dir: ./public_html/ # Ruta para archivos públicos
