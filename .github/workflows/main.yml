@@ -1,4 +1,4 @@
-on: 
+on:
   push:
     branches:
       - main
@@ -10,52 +10,52 @@ jobs:
     name: 🎉 Despliegue Laravel
     runs-on: ubuntu-latest
     steps:
-    # 1. Clonar el repositorio
-    - name: 🚚 Obtener el código más reciente
-      uses: actions/checkout@v2.3.2
+      # 1. Clonar el repositorio
+      - name: 🚚 Obtener el código más reciente
+        uses: actions/checkout@v2.3.2
 
-    # 2. Instalar dependencias PHP
-    - name: ⚙️ Configurar PHP y Composer
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '7.4' # Ajusta según la versión que uses
-        extensions: mbstring, pdo, tokenizer, xml, bcmath, ctype, fileinfo, json
-        ini-values: post_max_size=256M, upload_max_filesize=256M
-        tools: composer
+      # 2. Instalar dependencias PHP
+      - name: ⚙️ Configurar PHP y Composer
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.4" # Ajusta según la versión que uses
+          extensions: mbstring, pdo, tokenizer, xml, bcmath, ctype, fileinfo, json
+          ini-values: post_max_size=256M, upload_max_filesize=256M
+          tools: composer
 
-    - name: Instalar dependencias PHP
-      run: composer install --no-dev --optimize-autoloader
+      - name: Instalar dependencias PHP
+        run: composer install --no-dev --optimize-autoloader
 
-    # 3. Preparar el entorno
-    - name: Configurar entorno
-      run: |
-        cp .env.example .env
-        php artisan config:clear
-        php artisan cache:clear
-        php artisan config:cache
+      # 3. Preparar el entorno
+      - name: Configurar entorno
+        run: |
+          cp .env.example .env
+          php artisan config:clear
+          php artisan cache:clear
+          php artisan config:cache
 
-    # 4. Generar assets frontend (si aplica)
-    - name: Instalar dependencias NPM y construir assets
-      run: |
-        npm install
-        npm run prod
+      # 4. Generar assets frontend (si aplica)
+      - name: Instalar dependencias NPM y construir assets
+        run: |
+          npm install
+          npm run prod
 
-    # 5. Subir el proyecto completo al servidor
-    - name: 📂 Subir proyecto completo
-      uses: SamKirkland/FTP-Deploy-Action@4.0.0
-      with:
-        server: ${{ secrets.ftp_server }}
-        username: ${{ secrets.ftp_username }}
-        password: ${{ secrets.ftp_password }}
-        local-dir: ./
-        server-dir: ./${{ secrets.ftp_project_dir }}/ # Directorio del proyecto Laravel completo
+      # 5. Subir el proyecto completo al servidor
+      - name: 📂 Subir proyecto completo
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        with:
+          server: ${{ secrets.ftp_server }}
+          username: ${{ secrets.ftp_username }}
+          password: ${{ secrets.ftp_password }}
+          local-dir: ./
+          server-dir: ./${{ secrets.ftp_project_dir }}/ # Directorio del proyecto Laravel completo
 
-    # 6. Subir solo la carpeta public al directorio public_html
-    - name: 📂 Sincronizar carpeta public
-      uses: SamKirkland/FTP-Deploy-Action@4.0.0
-      with:
-        server: ${{ secrets.ftp_server }}
-        username: ${{ secrets.ftp_username }}
-        password: ${{ secrets.ftp_password }}
-        local-dir: ./public
-        server-dir: ./public_html # Ruta para archivos públicos
+      # 6. Subir solo la carpeta public al directorio public_html
+      - name: 📂 Sincronizar carpeta public
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        with:
+          server: ${{ secrets.ftp_server }}
+          username: ${{ secrets.ftp_username }}
+          password: ${{ secrets.ftp_password }}
+          local-dir: ./public
+          server-dir: ./public_html/ # Ruta para archivos públicos
