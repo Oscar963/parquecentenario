@@ -3,7 +3,7 @@ on:
     branches:
       - main
 
-name: 🚀 Despliegue Laravel 8.0 -
+name: 🚀 Despliegue Laravel 8.0
 
 jobs:
   web-deploy:
@@ -18,29 +18,32 @@ jobs:
       - name: ⚙️ Configurar PHP y Composer
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "7.4" # Ajusta según la versión que uses
+          php-version: "7.4" # Ajusta según la versión que usas
           extensions: mbstring, pdo, tokenizer, xml, bcmath, ctype, fileinfo, json
           ini-values: post_max_size=256M, upload_max_filesize=256M
           tools: composer
 
-      - name: Instalar dependencias PHP
-        run: composer install --no-dev --optimize-autoloader
+      # 3. Instalar dependencias de Laravel
+      - name: 🛠️ Instalar dependencias Laravel
+        run: |
+          composer install --no-dev --optimize-autoloader
 
-      # 3. Preparar el entorno
-      - name: Configurar entorno
+      # 4. Configurar archivo .env y generar clave de aplicación
+      - name: 🔑 Configurar entorno
         run: |
           cp .env.example .env
+          php artisan key:generate
           php artisan config:clear
           php artisan cache:clear
           php artisan config:cache
 
-      # 4. Generar assets frontend (si aplica)
-      - name: Instalar dependencias NPM y construir assets
+      # 5. Generar assets frontend (si aplica)
+      - name: 🖼️ Construir assets frontend
         run: |
           npm install
           npm run prod
 
-      # 5. Subir el proyecto completo al servidor
+      # 6. Subir el proyecto completo al servidor
       - name: 📂 Subir proyecto completo
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
@@ -50,14 +53,14 @@ jobs:
           local-dir: ./
           server-dir: ./${{ secrets.ftp_project_dir }}/ # Directorio del proyecto Laravel completo
 
-      # 6. Editar el archivo index.php
+      # 7. Editar el archivo index.php antes de subirlo a public_html
       - name: ✏️ Editar archivo index.php para public_html
         run: |
           sed -i "s|/../vendor/autoload.php|/../../${{ secrets.ftp_project_dir }}/vendor/autoload.php|" ./public/index.php
           sed -i "s|/../bootstrap/app.php|/../../${{ secrets.ftp_project_dir }}/bootstrap/app.php|" ./public/index.php
 
-      # 7. Subir solo la carpeta public al directorio public_html
-      - name: 📂 Sincronizar carpeta public
+      # 8. Subir solo la carpeta public al directorio public_html
+      - name: 🌐 Sincronizar carpeta public
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
           server: ${{ secrets.ftp_server }}
