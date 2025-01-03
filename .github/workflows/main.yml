@@ -3,40 +3,68 @@ on:
     branches:
       - main
 
-name: 🚀 Despliegue Laravel para Parque Centenario
+name: 🚀 Despliegue Laravel 8.0
 
 jobs:
   web-deploy:
-    name: 🎉 Despliegue Laravel desde GitHub
+    name: 🎉 Despliegue Laravel
     runs-on: ubuntu-latest
     steps:
-      # 1. Clonar el repositorio en el servidor
-      - name: 🚚 Clonar el repositorio en el servidor
-        run: |
-          sshpass -p "${{ secrets.ftp_password }}" ssh -o StrictHostKeyChecking=no ${{ secrets.ftp_username }}@${{ secrets.ftp_server }} << 'EOF'
-          if [ ! -d "${{ secrets.ftp_project_dir }}" ]; then
-            git clone https://github.com/Oscar963/parquecentenario.git ${{ secrets.ftp_project_dir }}
-          else
-            cd ${{ secrets.ftp_project_dir }}
-            git reset --hard
-            git pull origin main
-          fi
-          EOF
+      # 1. Clonar el repositorio
+      - name: 🚚 Obtener el código más reciente
+        uses: actions/checkout@v2.3.2
 
-      # 2. Instalar dependencias y configurar Laravel
-      - name: 🛠️ Instalar dependencias y configurar Laravel
+      # 2. Instalar dependencias PHP
+      - name: ⚙️ Configurar PHP y Composer
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.4" # Ajusta según la versión que usas
+          extensions: mbstring, pdo, tokenizer, xml, bcmath, ctype, fileinfo, json
+          ini-values: post_max_size=256M, upload_max_filesize=256M
+          tools: composer
+
+      # 3. Instalar dependencias de Laravel
+      - name: 🛠️ Instalar dependencias Laravel
         run: |
-          sshpass -p "${{ secrets.ftp_password }}" ssh -o StrictHostKeyChecking=no ${{ secrets.ftp_username }}@${{ secrets.ftp_server }} << 'EOF'
-          cd ${{ secrets.ftp_project_dir }}
           composer install --no-dev --optimize-autoloader
+
+      # 4. Configurar archivo .env y generar clave de aplicación
+      - name: 🔑 Configurar entorno
+        run: |
           cp .env.example .env
           php artisan key:generate
           php artisan config:clear
           php artisan cache:clear
           php artisan config:cache
-          EOF
 
-      # 3. Sincronizar la carpeta public con public_html
-      - name: 🌐 Sincronizar carpeta public con public_html
+      # 5. Generar assets frontend (si aplica)
+      - name: 🖼️ Construir assets frontend
         run: |
-          sshpass -p "${{ secrets.ftp_password }}" rsync -avz --delete ${{ secrets.ftp_username }}@${{ secrets.ftp_server }}:${{ secrets.ftp_project_dir }}/public/ ${{ secrets.ftp_username }}@${{ secrets.ftp_server }}:/path/to/public_html/
+          npm install
+          npm run prod
+
+      # 6. Subir el proyecto completo al servidor
+      - name: 📂 Subir proyecto completo
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        with:
+          server: ${{ secrets.ftp_server }}
+          username: ${{ secrets.ftp_username }}
+          password: ${{ secrets.ftp_password }}
+          local-dir: ./
+          server-dir: ./${{ secrets.ftp_project_dir }}/ # Directorio del proyecto Laravel completo
+
+      # 7. Editar el archivo index.php antes de subirlo a public_html
+      - name: ✏️ Editar archivo index.php para public_html
+        run: |
+          sed -i "s|/../vendor/autoload.php|/../../${{ secrets.ftp_project_dir }}/vendor/autoload.php|" ./public/index.php
+          sed -i "s|/../bootstrap/app.php|/../../${{ secrets.ftp_project_dir }}/bootstrap/app.php|" ./public/index.php
+
+      # 8. Subir solo la carpeta public al directorio public_html
+      - name: 🌐 Sincronizar carpeta public
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        with:
+          server: ${{ secrets.ftp_server }}
+          username: ${{ secrets.ftp_username }}
+          password: ${{ secrets.ftp_password }}
+          local-dir: ./public/
+          server-dir: ./public_html/ # Ruta para archivos públicos
