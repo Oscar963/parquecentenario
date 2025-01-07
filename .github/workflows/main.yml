@@ -1,42 +1,41 @@
+name: 🚀 Despliegue Laravel con SSH
+
 on:
   push:
     branches:
       - main
 
-name: 🚀 Despliegue Laravel para Parque Centenario
-
 jobs:
-  web-deploy:
-    name: 🎉 Despliegue Laravel desde GitHub
+  deploy:
+    name: 🎉 Despliegue en Servidor
     runs-on: ubuntu-latest
     steps:
-      # 1. Clonar el repositorio en el servidor
-      - name: 🚚 Clonar el repositorio en el servidor
+      # Configurar clave SSH
+      - name: 🔑 Configurar SSH
         run: |
-          sshpass -p "${{ secrets.ftp_password }}" ssh -o StrictHostKeyChecking=no ${{ secrets.ftp_username }}@${{ secrets.ftp_server }} << 'EOF'
-          if [ ! -d "${{ secrets.ftp_project_dir }}" ]; then
-            git clone https://github.com/Oscar963/parquecentenario.git ${{ secrets.ftp_project_dir }}
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/repo
+          chmod 600 ~/.ssh/repo
+          echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      # Clonar repositorio en el servidor remoto
+      - name: 🚚 Clonar repositorio
+        run: |
+          ssh -i ~/.ssh/repo -o StrictHostKeyChecking=no parquecentenario@${{ secrets.SERVER_HOST }} << 'EOF'
+          if [ ! -d "/path/to/project" ]; then
+            git clone git@github.com:Oscar963/parquecentenario.git /path/to/project
           else
-            cd ${{ secrets.ftp_project_dir }}
-            git reset --hard
+            cd /path/to/project
             git pull origin main
           fi
           EOF
 
-      # 2. Instalar dependencias y configurar Laravel
-      - name: 🛠️ Instalar dependencias y configurar Laravel
+      # Ejecutar comandos en el servidor
+      - name: 🛠️ Instalar dependencias y preparar el proyecto
         run: |
-          sshpass -p "${{ secrets.ftp_password }}" ssh -o StrictHostKeyChecking=no ${{ secrets.ftp_username }}@${{ secrets.ftp_server }} << 'EOF'
-          cd ${{ secrets.ftp_project_dir }}
+          ssh -i ~/.ssh/repo -o StrictHostKeyChecking=no parquecentenario@${{ secrets.SERVER_HOST }} << 'EOF'
+          cd /path/to/project
           composer install --no-dev --optimize-autoloader
-          cp .env.example .env
           php artisan key:generate
-          php artisan config:clear
-          php artisan cache:clear
-          php artisan config:cache
           EOF
-
-      # 3. Sincronizar la carpeta public con public_html
-      - name: 🌐 Sincronizar carpeta public con public_html
-        run: |
-          sshpass -p "${{ secrets.ftp_password }}" rsync -avz --delete ${{ secrets.ftp_username }}@${{ secrets.ftp_server }}:${{ secrets.ftp_project_dir }}/public/ ${{ secrets.ftp_username }}@${{ secrets.ftp_server }}:/path/to/public_html/
