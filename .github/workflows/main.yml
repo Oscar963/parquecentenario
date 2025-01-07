@@ -19,7 +19,7 @@ jobs:
           echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
           chmod 600 ~/.ssh/known_hosts
 
-      # Clonar repositorio en el servidor remoto
+      # Clonar repositorio en el servidor remot
       - name: 🚚 Clonar repositorio
         run: |
           ssh -i ~/.ssh/repo -o StrictHostKeyChecking=no parquecentenario@${{ secrets.SERVER_HOST }} << 'EOF'
