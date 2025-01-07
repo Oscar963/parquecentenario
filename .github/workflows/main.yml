@@ -22,7 +22,7 @@ jobs:
       # Clonar repositorio en el servidor remot
       - name: 🚚 Clonar repositorio
         run: |
-          ssh -i ~/.ssh/repo -o StrictHostKeyChecking=no parquecentenario@${{ secrets.SERVER_HOST }} << 'EOF'
+          ssh -i ~/.ssh/repo -o StrictHostKeyChecking=no -o HostKeyAlgorithms=ssh-rsa parquecentenario@216.241.30.22 << 'EOF'
           if [ ! -d "/path/to/project" ]; then
             git clone git@github.com:Oscar963/parquecentenario.git /path/to/project
           else
@@ -34,8 +34,9 @@ jobs:
       # Ejecutar comandos en el servidor
       - name: 🛠️ Instalar dependencias y preparar el proyecto
         run: |
-          ssh -i ~/.ssh/repo -o StrictHostKeyChecking=no parquecentenario@${{ secrets.SERVER_HOST }} << 'EOF'
+          ssh -i ~/.ssh/repo -o StrictHostKeyChecking=no -o HostKeyAlgorithms=ssh-rsa parquecentenario@216.241.30.22 << 'EOF'
           cd /path/to/project
           composer install --no-dev --optimize-autoloader
           php artisan key:generate
           EOF
+          
