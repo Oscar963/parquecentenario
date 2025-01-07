@@ -22,6 +22,6 @@ jobs:
         run: |
           git clone git@github.com:Oscar963/parquecentenario.git cloned-repo
 
-      # Verificar archivos del repositorio clonad
+      # Verificar archivos del repositorio clonado
       - name: List Cloned Repository Files
         run: ls -la cloned-repo
