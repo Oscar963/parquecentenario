@@ -1,27 +1,24 @@
-on: 
+name: 🚀 Despliegue en servidor propio
+
+on:
   push:
     branches:
       - main
-name: 🚀 Despliege sitioweb on push
 
 jobs:
-  clone-repo:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Configurar SSH para clonar
-      - name: Set up SSH for cloning
+      # Configurar conexión SSH con tu servidor
+      - name: Set up SSH for server
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ecdsa
-          chmod 600 ~/.ssh/id_ecdsa
-          ssh-keyscan -t ecdsa github.com >> ~/.ssh/known_hosts
+          echo "${{ secrets.SERVER_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -t ecdsa parquecentenario.imaarica.cl >> ~/.ssh/known_hosts
 
-      # Clonar el repositorio desde el servidor remoto
-      - name: Clone Target Repository
+      # Clonar el repositorio directamente en tu servidor
+      - name: Clone repository on server
         run: |
-          git clone git@github.com:Oscar963/parquecentenario.git cloned-repo
-
-      # Verificar archivos del repositorio clonado
-      - name: List Cloned Repository Files
-        run: ls -la cloned-repo
+          ssh -i ~/.ssh/id_rsa id_ecdsa@parquecentenario.imaarica.cl "git clone git@github.com:Oscar963/parquecentenario.git /"
